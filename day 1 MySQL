@@ -311,5 +311,161 @@ MySQL을 이용 한 데이터베이스 구 축 절차
 
 
 
+//////////////////////////////////////////////////////
+
+select 명령어
+
+
+
+데이터 활용 
+- SELECT 열 이름 FROM 테이블 이름 [WHERE 조 건]
+모 든 데이터 출 력하기 (열 이름 대신 ‘ * ’ )
+열을 선택해 데이터 출 력하기 (열 이름 나열)
+특 정 데이터를 만족 하는 데이터 출 력하기 (WHERE절에 조 건 입력)
+
+
+select 열 이름 from 테이블 이름 [where 조건];
+
+
+데이터 활용
+
+모든 데이터 출력하기
+
+where 절은  모든 데이터 출력하기 (열 이름 대시 "+"
+
+- 새로 운 테이블 생성
+
+테이블 이름 에 space 가 들 어간 경우 의 처리(백틱[backtick]키 활용)
+ Navigator 창에서 “Refresh All” 의 중요성
+새로 테이블 을 만든 뒤 개체가 보 이지 않을 경우 필수 로 실행할 것
+
+
+- 테이블 삭제
+ DROP TABLE 테이블 이름
+ 
+ 
+ SQL(Structured Query Language)
+ 
+ SQL은 Structured Query Language (구 조 적 질의 언어)의 줄 임말로, 관계형 데이터베이스 시스 템(RDBMS)에서 자료 를
+관리 및 처리하기 위해 설계된 언어
+
+
+SQL 문 법은 크 게는 3가지의 종류로 나누 어진다.
+
+sql 문법은 ddl dml dcl로 나눠진다. 
+
+ddl은 데이
+
+
+
+DDL(Data Definition Language, 데이터 정의 언어) 
+ 각 릴레이션을 정의하기 위해 사용 하는 언어 (CREATE, ALTER, DROP...) 릴레이션이 테이블로도 쓰인다.
+ 
+ 
+DML(Data Manipulation Language, 데이터 조 작 언어) 
+ 데이터를 추 가/수 정/삭제하기 위한, 즉 데이터 관리를 위한 언어 (SELECT, INSERT, UPDATE...)
+ 
+ 
+DCL(Data Control Language, 데이터 제어 언어) 
+ 사용 자 관리 및 사용 자별로 릴레이션 또 는 데이터를 관리하고 접근 하는 권한을 다루 기 위한 언어 (GRANT, REVOKE...
+ 
+
+
+SQL(Structured Query Language) 
+
+
+[ SQL의 언어적 특 성 ]
+각 프 로 그 래밍 언어가 가진 고유한 특 성은 꼭 구 별 지어 알아 두 어야 사용 할 때 오 류 를 줄 일 수 있다. 
+SQL은 다음 과 같은 언어적 특 성을 갖는 다.
+SQL은 대소 문 자를 가리지 않는 다.
+(단, 서버 환경이나 DBMS 종류에 따라 데이터베이스 또 는 필드 명에 대해 대소 문 자를 구 분 하기도 한다.)
+SQL 명령은 반드 시 세미콜 론(;)으 로 끝 나야 한다.
+고유의 값은 따옴 표('')로 감싸준 다. SELECT * FROM EMP WHERE NAME = ‘James’;
+주 석은 일종 의 도 움 말로, 주 석 처리된 문 장은 프 로 그 램에서 동 작하지 않는 다. 한 줄 주 석은 문 장 앞에 -- 를 붙 여서
+사용 한다. 여러 줄 주 석은 /* */ 로 묶는다.
+
+
+//////////
+
+
+select 절에서 from과 나머지를 다 생략 할 수 ㅣㅇㅆ다.
+
+
+DB, TABLE, 열의 이름 이 확실하지 않을 때 조 회하는 방법 
+
+
+현재 서버에 어떤 DB가 있는 지 보 기
+ SHOW DATABASES;
+ 
+ 
+현재 서버에 어떤 TABLE이 있는 지 보 기
+데이터베이스 에 있는 테이블 정보 조 회
+ SHOW TABLE STATUS;
+ 
+ 
+ 
+테이블 이름 만 간단히 보 기
+ SHOW TABLES;
+ 
+ 
+ 
+ 
+employees 테이블 의 열이 무 엇이 있는 지 확인
+ DESCRIBE emp 또 는 DESC emp;
+ 
+ 
+ 특 정 조 건의 데이터만 조 회 - <SELECT … FROM … WHERE> 
+기본 적인 WHERE절
+조 회하는 결과에 특 정한 조 건을 줘서 원하는 데이터만 보 고 싶을 때 사용
+
+
+SELECT 필드 이름 FROM 테이블 이름 WHERE 조 건식;
+
+
+
+select 에는 from 
+            where
+            group by
+            havig
+            order by 가 있다.
+            
+            
+            select 열이름 
+            from 테이블 이름
+            where 조건
+            
+            
+          
+USE 구문
+
+SELECT 문 학습 위해 사용할 데이터베이스 지정
+
+지정해 놓은 후 특별히 다시 USE문 사용하거나 다른 DB를 사용하겠다고 명시하지 않는 이상 모든 SQL문은 지정 DB에서 수행
+
+USE 데이터베이스 이름;
+
+MySQL의 sqldb를 사용하기 위해서는 쿼리 창에 
+
+use sqldb;
+를 사용한다. 
+
+
+
+테이블에서 모든 열 가져오기
+
+select * from emp;
+
+
+테이블에서 필요로 하는 열만 가져오기
+
+select ename from  emp;
+
+select ename, sal from emp;
+
+
+select sal, ename from emp;
+
+
+select * from emp where comm is null; 은 emp 테이블에서 comm이 null인것만 찾아낸다.
 
 
