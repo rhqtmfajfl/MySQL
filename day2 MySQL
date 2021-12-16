@@ -1,5 +1,358 @@
 day 2
 
 
+# day 1 mysql 내장 함수
 
+# 숫자 관련 함수
+
+
+select 3 from emp;  # 원래 select 절에는 emp로 부터 3을 출력한다. 
+# 만약 from 절에 있는 행이 14개면 select르 나오는 행의 개수도 14개다 
+#기본적으로 select의 emp가 가지고 있는 행의 개수 만큼 3이 출력 된다.
+
+select now() from emp;
+
+
+select 3;       # select 절의 내용이 한번만 출력한다.  이기능은 대부분의 데이터베이스에서 지원하지 않는다. dual로 인해 만들어 지는 내용
+select 3 from dual;  # select 절의 내용이 한번만 출력한다.
+
+#프로그램에서 사용한ㄴ 값 자체를 리터럴이란한다.
+
+# 절대값
+
+select 3, ABS(3), ABS(-3) FROM DUAL;
+
+###    ABS()는 3은 3으로 -3도 3으로 만들어 준다.
+
+#######################
+# 반올림과 버림
+# 0을 주면 소수점 이하를 날리겠따. TRUNCATE() 밑에 자리 다 자른다.
+SELECT ROUND(7777.56789) FROM DUAL;    # 밑의 자리를 반올림 한다.
+
+# 실수 데이터를 정수로 만들때 필요
+
+
+SELECT ROUND(777.56789, 1) FROM DUAL;  # 소수점 몇번째 자리까지 로 만들지 정해준다. 1은 첫번째 자리이다.
+
+# 반올림
+
+
+
+# 음의 가
+
+# 1의 자리에서 반올림하여 10자리에서 나타내라
+SELECT ROUND(7777.56789 ,-1) FROM DUAL; # 정수 첫번째 자리에서 방ㄴ올림하고 절삭한다.
+SELECT ROUND(7777.56789 ,-2) FROM DUAL;  # 7800
+# -1로 적으면 정수의 첫째자리
+
+select truncate(7777.56789, 1) from dual;
+
+
+#나머지 함수들 = -
+
+
+# greatest ()안ㅢ 어떤 숫자든
+# fromat을 사용하는 이유는 금액같은거 계산할 때 사용
+
+# 숫자에 콘마가 있으면 문자이다.
+
+# 정수데이터의 경우 숫자마다 찬단위로 쓰는것
+
+
+#SELECT CEILING(3.14), FLOOR(3.14), GREATEST(1,2,3,4,5), LEAST(1,2,3,4,5) FROM DUAL;
+SELECT FORMAT(123456789.123456, 3) as "소수점 쉼표구분", 
+ FORMAT(123456789, 4) as "정수 쉼표구분", FORMAT(123456789, 0) as "소수점이하 없이 정수 쉼표구분";
+
+
+select truncate(7777.56789,1) from dual;
+SELECT TRUNCATE(7777.56789 ,-1) FROM DUAL; # 정수에서 첫째 자리에서 첫번째 자리를 버린다. TRUNCATE
+
+
+
+# substring("문자열", 시작위치, 개수) # 문자열 중 시작위치 부터 개수값을 출력
+
+#ltrim("문자열") # 앞에있는 문자의 공백 없앤다.
+
+#rtrim("문자열") #뒤에있는 문자 제거alter
+# trim의 경우 없애고자 하는 문자 선택 가능
+
+
+#lcase lower는 소문자로 바꾼다.
+
+
+#LEFT(‘문자열’, 개수) 문자열 중 왼쪽에서 개수만큼 추출
+#RIGHT(‘문자열’, 개수) 문자열 중 오른쪽에서 개수만큼 추
+
+
+# char_length("문자열", 개수) # length("문자열") 바이트 수로 반환
+
+# 아스키 코드는 1 byte로 충분하다.
+
+# 바이트 수를 추출하고자 할 때
+
+#  
+SELECT FORMAT(123456789.123456, 3) as "소수점 쉼표구분", 
+ FORMAT(123456789, 4) as "정수 쉼표구분", FORMAT(123456789, 0) as "소수점이하 없이 정수 쉼표구분";
+
+
+select "A", ASCII("A"), ascii(" ") from dual; # A는 그대로 아스키 A는 65 아스키 공백은 32다.
+SELECT CONCAT("JAVA", "화이팅") AS 화이팅; #자바와 화이팅이 한개의 문자로 합쳐졌다.
+SELECT CONCAT_WS("**","SQL","화이이팅") AS "화이팅 !!"; # 문자열 구분자와 함께 문자열을 이어준다.
+
+SELECT CONCAT(ename,'의 급여는' , sal, "입니다.") as 명세 from emp;
+
+select '20200332', SUBSTRING('20203331',1,4) AS YEAR
+	,SUBSTRING('20200331', 5,2) AS MONTH,
+    SUBSTRING('20200331',7,2); # SUBSTRING 문자열 시작 위치 개수 
+# 0부터 시작이 아니라 1부터시작이다. 그리고 4개만 출력하게 한다.
+# 1부터 4개
+# 5부터 두개
+#7부터 두개
+
+SELECT TRIM('   JAVA     '), RTRIM('   JAVA   '), TRIM(BOTH 'ㅋ' FROM 'ㅋㅋJDBCㅋㅋㅋ');
+
+
+
+
+#############논리 관련 함수############alter
+
+#IF 함수 
+
+#IF(논리식, 참일때 값 거짓일때값) 
+# 논리식이 참일때 값을 ㅊ
+
+# IF NULL은NULL엦 값1이 NULL이면 값2로 대ㅑ치하고 아니면 그대로 출력
+
+
+
+
+SELECT IF(3>5, 'TRUE', 'FALSE') FROM DUAL;
+SELECT IF(3<5, 'TRUE','FALSE') FROM DUAL;
+
+SELECT ENAME, IFNULL(COMM, 0) FROM EMP; # IFNULL은 값1이 NULL이면 값2로 대치하고 그렇지 않으면 값1을 출력
+
+SELECT ename, IFNULL(COMM, 0) FROM EMP; #comm에서 null을 0으로 바꿈
+
+SELECT ENAME, IFNULL(COMM, '미정') FROM emp;
+
+select ename, ifnull(comm,0) + 100 from emp; #기본 널 값을 0으로 바꾸는 데 100을 더한다.
+
+SELECT ename, IFNULL(comm, 0) + 100 FROM emp;
+
+
+SELECT ename, sal, IF(sal> 4000, 'T1', IF(sal> 3000, 'T2', IF(sal> 2000, 'T3', IF(sal> 1000, 'T4','T5')))) 
+FROM emp
+
+
+
+##SAL 이 4000보다 크면 T1 출력
+# SAL이 3000보다 겄을때 3000
+# 그다음은 200이다.
+# 마지막에는 1000보다 크지않으면 T5 출력한다.
+
+
+#스위치 ,
+
+
+ #CASE value WHEN compare_value THEN result [WHEN compare_value THEN result ...] [ELSE result] END;
+#       컬러 ㅁ명         비교값
+# CASE WHEN condition THEN result [WHEN condition THEN result ...] [ELSE result] END
+# 비교식이 참이면 condition
+
+
+
+
+####################################
+
+# 날짜 관련 함수as
+
+# DATA_ADD(날짜, 기준값) 날짜에서 기준 값 만큼 더한다
+#
+
+## CURDATE(), CURRENT_DATE();  현재 날짜오 ㅏ시간 출력as
+
+
+# WEEKDAY(날짜) 날짜의 주별 일자 추력;
+
+#FROMDAYS 3# 경과 같짜as
+
+
+# DATE_FORMAT(날짜,'형식') 날짜를 형식에 맞체 출력
+
+
+# NOW()에 현재 값을 뺀다 .그래야 된다.as
+
+select timestampdiff(year, hiredate, NOW()) from emp; # 첫번째와 두번째의 차를 구해준다.
+
+
+
+select timestampdiff(week,HIREDATE,NOW()) FROM emp;
+SELECT timestampdiff(month, hiredate, now()) from emp;
+
+
+select timestampdiff(month, cast('2021-01-01' as date), now());
+select timestampdiff(day,cast("2021-01-01" as date), now());
+
+
+
+# 날짜 포맷은 date_format을 사용해 준다.
+
+
+SELECT ename, case WEEKDAY(hiredate) 
+when '0' then '월요일' 
+when '1' then '화요일' 
+when '2' then '수요일' 
+when '3' then '목요일' 
+when '4' then '금요일' 
+when '5' then '토요일' 
+when '6' then '일요일' 
+end as '입사 요일' 
+from emp;
+
+
+
+
+
+SELECT case WEEKDAY(NOW()) 
+when '0' then '월요일' 
+when '1' then '화요일' 
+when '2' then '수요일' 
+when '3' then '목요일' 
+when '4' then '금요일' 
+when '5' then '토요일' 
+when '6' then '일요일' 
+end as '오늘의 요일' ;
+
+# 입사요일 을 출력
+
+
+
+select date_format(now(),'%Y년 %y년');
+
+select date_format('2021-01-03', '%m월 %c월');
+
+select date_format('2021-01-03', '%d일 %e일');
+
+select date_format(now(), '%H시 %h시 %l시');
+
+select date_format(now(), '%T %r');
+
+select now(), date_add(now(), interval 2 minute); # 현재 시간에서 2분을 더해준다.
+
+select now(), date_add(now(), interval 1 hour);
+
+select now(), date_add(now(), interval 1 day);
+select now(), date_add(now(), interval 1 month);
+select now(), date_add(now(), interval 1 year);
+
+#date 포맷 함수
+
+select date_format(now(), "%Y %y년"); # 대문자 Y와 소문자 y의 차이
+select date_format('2021-01-03', '%m월 %c월');  # %m과 %c의 차이는 앞에 무조건 0이 붙느냐 안붙느냐의 차이이다.
+
+
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 1 MINUTE); # interval 1 minute 는 현재의 시간으로 부터 1분을 더해라는 의미이다.
+												# 
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 1 HOUR);
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 1 DAY);
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 1 MONTH);
+SELECT NOW(), DATE_ADD(NOW(), INTERVAL 1 YEAR)
+
+
+
+###############################################
+# 서브 쿼리
+
+# 서브쿼리는 and
+
+# 월금의 평균을 알아내는 select와  (서브쿼리) 이렇게 알아낸 평균으로 직원들을 알아내는 것이 메인 쿼리이다.
+
+#스미스와 동일한 부서에서 근무하는 직원들이 누구인지 알고 싶다.
+
+# 먼저 스미스가 근무하ㅡㄴ 부서의 넘버를 알아야 한다. select 명령을 두번 수행시키게 된다.
+
+select deptno from emp where ename = 'SMITH';
+
+# alter# 결과에 스미스를 포함할거냐 아니냐는 디테일한 것이다.
+
+select ename 
+from emp 
+where deptno = ( select deptno 
+				 from emp 
+				 where ename = 'SMITH');
+ # 스미스와 같은 부서 번호를 가진 사람들의 사원들
+ #
+ 
+ 
+ #모든 직원들이 받는 월급의 평균보다 월급을 많이 받는 사람들을 알고자 할 때
+ 
+ SELECT * FROM EMP WHERE SAL > (SELECT AVG(SAL) FROM EMP);
+ 
+ SELECT AVG(SAL) FROM EMP;
+ 
+ # 단일 일행 서브쿼리  서브쿼리의 결과가 한개가 나올 때
+ 
+ # 다중행 서크붜리 서브쿼리의 결과가 여러개가 나올때
+ 
+ 
+ 
+ # 서브쿼리의 유형
+ # 단일 행 서브쿼디
+-- 단일 행 변환
+-- 단일 행 비교 연산ㅅ자(=, >, >=, <=, <> 등) 사용
+ # <> 이 연산자와 != 연산자는 같은 의미이다.
+ 
+-- 다중 행 서브쿼리
+-- 여러 행 반환
+-- 다중 행 비교 연산자(IN, ANY, ALL 등 ) 사용
+
+
+# 서브쿼리의 수행 결과가 여러개일 때 IN을 사용한다.
+
+# ANY는 SOME 이라고 써도 된다.
+
+#
+ 
+ # 에러 발생
+ # select * from emp where sal > (select sal from emp where month(hiredate ) =2);
+ 
+# 
+select sal from emp where month(hiredate) = 2;
+
+select * from emp where sal > all( select sal from emp where month(hiredate) =2);
+
+#크다 all은 괄호안의 제시된 값들이 최고값보다 큰가?
+# 2월에 입사한사람들 보다 월급을 많이 받는ㄷ 사람
+ # 1600보다 커도 되거나 1250보다 크면 딘다.alter
+ # 2월에 잎사한 하사람 중에서 나온 데이터 값들 중에서 최소한 하나라도 크년 된다.
+ 
+ #all은 모든 것을 적용하는냐
+ # any는 그중 한개를 적용하느냐
+ 
+ # 
+ 
+ select * from emp where deptno = ( select deptno from dept);
+ 
+ 
+#스프링은 개발 생산성이 높아진다.
+ 
+ select * from emp where deptno = ( select deptno from dept WHERE loc_code IN( 'B1', 'C1'));
+ 
+ 
+ # 부서별
+ 
+ # concat으로 엮어서 받아온다.
+ 
+select concat(deptno, '부서에서 최고 월급은 ', sal, '이며', ename, '입니다.') result
+from emp where ( sal,deptno) in (select max(sal), deptno from emp group by deptno);
+ 
+ 
+ 
+ 
+ ################################################
+ any 
+ 
+ 
+ 
+ 
 
