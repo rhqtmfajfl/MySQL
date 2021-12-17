@@ -1,2 +1,46 @@
 
 day 3
+
+
+GROUP BY 및 HAVING 그리고 집계 함수
+
+GROUP BY 절
+
+그룹으로 묶어주는 역할
+
+
+집계 함수(Aggregate Function)와 함께 사용
+
+효율적인 데이터 그룹화 (Grouping
+
+
+집계함수 에는 ->   SUM, AVG
+
+
+SELECT DEPTNO, AVG(SAL)
+FROM 
+GROUP BY DEPTNO # DEPTNO별로 그룹화 한다.
+GROUP BY DEPTNO
+
+DEPTNO 가  각각 10 20 30별로
+
+데이터 베이스 별로 데이터를 그룹화해서 많이 사용하는 기능이다.
+
+부서별로 묶겠다.
+
+
+그룹바이절은 자동으로 그룹별로 정렬을 해준다.
+그래서 그룹바이 뒤에 ORDER BY절을 따로 사용하지 않아도 된다.
+
+
+
+
+
+
+
+
+
+
+
+
+
