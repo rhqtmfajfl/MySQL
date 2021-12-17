@@ -1,0 +1,57 @@
+-- 전체 들의 급여 평균 출력
+# 전체직원의 월급의 평균을 구한다.
+# 집계함수라고 해서 그룹바이절과 꼭 같이 안써도 된다.
+# 전체의 평균을 구할때 null은 제외한다.
+# groupby를 내는 이유는 집계를 내기 위한것이다.
+SELECT avg(sal) 
+FROM emp;
+
+-- 직무별 직원들의 급여 평균 출력
+# 문제에서 뭐뭐 별 하면 직무별로 그룹핑해서 한다.
+# 직무에 속하는 직원들
+SELECT job, avg(sal) 
+FROM emp 
+GROUP BY job ;
+
+-- 직무별 직원들의 급여 평균과 전체 급여 평균을 함께 출력 
+# 직무별 전체 평균을 합께 출력 가능
+SELECT job, avg(sal) 
+FROM emp 
+GROUP BY job 
+WITH ROLLUP;
+
+-- 부서가 정해진 직원들에 한해서 직무별 부서별 직원들의 인원수 출력
+# 직원수를 세고자 할때
+SELECT job, deptno, count(*) 
+FROM emp 
+WHERE deptno is not null  # deptno에서 null은 안뽑겠다. 행의 조건은 where 절에서만 한다.
+GROUP BY job, deptno;  # 첫번째 그룹이 job이고 그다음 job에서 부서별로 그룹핑을 한다.
+# 
+
+
+-- 부서가 정해진 직원들에 한해서 직무별 부서별 직원들의 인원수
+-- 직무별 인원수, 전체 인원수도 함께 출력 - 합계도 함께 출력
+
+SELECT job, deptno, count(*) 
+FROM emp 
+WHERE deptno is not null
+GROUP BY job, deptno
+WITH ROLLUP;
+
+-- [ 원리 ]
+
+GROUP BY a WITH ROLLUP
+(a)
+() # 전체를 하나의 그룹으로 본다.
+
+GROUP BY a, b WITH ROLLUP
+(a, b)
+(a)
+()
+
+GROUP BY a, b, c WITH ROLLUP
+(a, b, c)
+(a, b)
+(a)
+()
+
