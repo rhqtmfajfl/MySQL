@@ -70,6 +70,17 @@ select ENAME, SAL, SAL+COMM AS "실급여"  from emp where COMM IS NOT NULL; #
 
 select ENAME from emp where MGR NOT IN("NULL"); # 13 명
 
+select ename
+from emp
+where MGR IS NULL; 매니저가 NULL인 사람 이름
+
+SELECT ENAME
+FROM EMP
+WHERE MGR IS NOT NULL; 매니저가 있는 사람 이름
+
+SELECT ENAME
+FROM EMP
+WHERE MGR NOT IN("NULL"); 매니저가 있는  사람 수
 
 
 -- 13. 사원테이블에서 월급이 많은 순으로 모든 정보를 출력하시오.
