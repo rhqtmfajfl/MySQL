@@ -32,6 +32,364 @@ union은 중복을 없앨 수 있다.
 union all은 중복을 허용한다.
 
 
+///////////////
+
+self join 
+
+자기 자신과 자기 자신이 조인한다는 의미
+
+select 절에 오는 컬럼이 기준이 되어서 
+
+조인으로 해결할때는  여러 테이블에 데이터가 나눠져 잇을 땨
+
+스미스 직우너의 매니저 팀장명을 알려고 하면  서브 쿼리로 알수 있다.
+
+사원들의 사번은 empno 매니저의 사본은 mgr mgr이 널인 직원도 있다.
+
+SELF JOIN(자체 조인) 
+자기 자신과 자기 자신이 조인한다는 의미
+SMITH 직원의 매니저(팀장)명을 알고 싶다.
+
+
+두개의 select 명으로 한다면
+
+
+emp라는 하나의 테이블을 논리적으로 두개의  테이블로 본대
+
+직우너 emp 테이블과 mannager 매니저 테이블
+
+select 명령에서 테이블은 하나지만 두개인 것처럼 나눠서 처리ㅏㄴ다.
+
+
+스미스 테이블 옆에 ford가 온다.
+
+직원 emp는 e로 
+매니저 emp는 m으로 한다.
+
+
+그래서
+
+select e.ename, m.ename
+from emp e
+join emp m
+on e.mgr = m.empno
+where e.ename = "SMITH";
+
+만약 WHERE 절이 없으면 KING을 제외하고
+
+다붙는다.
+
+SELECT *
+FROM EMP E
+JON EMP M
+ON E.MGR=M.EMPNO
+
+
+DML 데이터 조적언어는 테이블에 이쓴ㄴ 데이터를 추가 살지를 하낟.
+
+INSERT와 UPDATE DELETE는 트랜잭션이 발생할 수 있는 명령어 이다.\\
+
+
+작업을 하나의 트랜잭션으로 묶는다라고 한다.
+트랜잭셔능로 묶는 이유는 인간적이고 무결한 것을 넣기 위해
+
+여러개의 작업을 하나의 덩어리로 묶어서 그안에 작업이 모두 성거ㅗㅇ적으로 판단 되면
+COMMIT을 날려서 지금껏 수행한 능력을 최종적으로 적용한다.
+
+ROLLBACK은 이전에 저장한 작업 까지 되돌아간다.
+
+어떤 테이블의 데이터를 수행할때마다 자동 커밋이 된다.
+
+DML 데이터를ㄹ 하나의 트랜잭션으로 묶어서
+
+
+DML은
+테이블의 데이터를 변경하는 작업이다.
+
+DDL 데이터 정의어
+
+
+DCL 데이터 정의ㅗ
+GRANT REVOKE DENY구문
+
+
+
+
+/////////////////////
+
+
+INSERT 
+
+INSERT 테이블(열1, 열2...), VALUES(값1, 값2)
+
+테이블이 가지고 있는 열과 같은 이름만 ㄴ
+
+테이블 생략가능은 모두 넣으려고 하면 가능
+하지만 순서가 바뀌거나 이름ㅇ ㅣ바뀌면 하나씩 다 지정 해줘야 한다.
+
+
+생략할 경우에 VALUES 다음에 나오는 값들의 순서 및 개수가 테이블이 정의된
+
+**
+자동으로 증가하는 AUTO_INCREMENT = 이 테이블에 새로운 행이 추가 될때 마다 컬럼 값은 자동
+증가된 값을 넣어주는 것이다.
+
+데이터가 들어갈때 마다 자동으로 1씩증가되는 값이 들어간다.
+
+INSERT에서는 해당 열이 없다고 생각하고 입력
+INSERT문에서 NULL 값 지정하면 자동으로 값 입력
+1부터 증가하는 값 자동 입력
+적용할 열이 PRIMARY KEY 또는 UNIQUE일 때만 사용가능
+데이터 형은 숫자 형식만 사용 가능
+
+INSERT INTO select 구문 사용
+
+insert into 테이블 이름 (열이름1, 열이름2)
+SELECT문 ;
+
+
+데이터 수정
+
+데이터의 수정 : UPDATE 
+기존에 입력되어 있는 값 변경하는 구문
+
+WHERE절 생략 가능하나 WHERE절 생략하면 테이블의 전체 행의 내용 변경됨 
+
+실무에서 실수가 종종 일어남, 주의 필요 
+
+원상태로 복구하기 복잡하며, 다시 되돌릴 수 없는 경우도 있음
+
+
+
+
+
+
+데이터의 삭제 : DELETE FROM 
+행 단위로 데이터 삭제하는 구문
+WHERE절 생략되면 전체 데이터를 삭제함
+테이블을 삭제하는 경우의 속도 비교
+DML문인 DELETE는 트랜잭션 로그 기록 작업 때문에 삭제 느림
+DDL문인 DROP과 TRUNCATE문은 트랜잭션 없어 빠름
+테이블 자체가 필요 없을 경우에는 DROP 으로 삭제
+
+테이블의 구조는 남겨놓고 싶다면 TRUNCATE로 삭제하는 것이 효율적  -> 삭제하면 트랜잭션이 적용이 안되고
+삭제하면 끝이다. 
+
+
+
+조건부 데이터 입력, 변경
+
+
+대용량 데이터 처리의 경우 에러 발생하지 않은 구문 실행
+INSERT IGNORE문 
+에러 발생해도 다음 구문으로 넘어가게 처리
+에러 메시지 보면 적용되지 않은 구문이 어느 것인지 구분 가능
+
+
+ON DUPLICATE KEY UPDATE 구문 
+기본 키가 중복되면 데이터를 수정되도록 하는 구문도 활용 가능
+
+
+똑같은 프라이머리키로 설정되어 있는것에 데이터를 수정하도록 하는 구문
+중복된 키값이 발견되었을때 
+
+
+
+
+/////////////////////////
+
+
+WITH 절은 CTE를 표현하기 위한 구문이다.
+
+
+WITH 절은 VIEW를일시적으로 만들어서 사용한다.
+
+VIEW는
+
+EMP와 
+
+뷰는 복잡한 테이블을 간략하게 만들어 놓은 것
+
+뷰는 보안에 도움이 된다.
+
+
+
+비재귀적 CTE
+단순한 형태, 복잡한 쿼리문장을 단순화하는데 적합
+- CTE는 뷰와 용도가 비슷하지만 개선된 점이 많음
+- 뷰는 계속 존재해서 다른 구문에서도 사용 가능하지만, CTE와 파생 테이블은 구문이 끝나면 소멸됨
+- 중복 CTE 허용됨
+
+
+//////////////////////////////////////////////////////
+
+
+MySQL의 데이터 형식 
+MySQL에서 지원하는 데이터 형식의 종류 
+Data Type으로 표현
+데이터 형식, 데이터형, 자료형, 데이터 타입 등 다양하게 불림
+데이터 형식에 대한 이해가 필요한 이유
+SELECT문 더욱 잘 활용
+테이블의 생성 효율적으로 하기 위해 필요
+MySQL에서 데이터 형식의 종류는 30개 정도
+중요하고 자주 쓰는 형식에 대해 중점 학습 
+
+
+
+문자데이터 형식 CHAR와 VARCHAR만 기억  -> 
+CHAR는 고정길이를 
+VARCHAR는 가변길이 문자형
+
+CHAR(5) 하면 문자를 5개 까지 저장
+문자를 2개만 정하면 나머지는 공백으로 들어간다.
+
+MYSQL에서 () 괄호안에 숫자는 문자 갯수를 의미 한다.
+
+VARCHAR에 (5)로 하면 
+최대 5개 까지 저장하겠다는 의미이지
+
+2개만 문자를 넣더라도 나머지 3개의 공간은 아예 없는 것이 된다.
+
+
+BLOB 바이너리 값을 넣고 싶은데 너무 큰 값을 너흘 때 사용 한다.
+
+날짜와 시간 데이터 형식
+
+DATE 날짜만 처리
+
+TIME 시분초 형식
+
+
+DATETIME 날짜와 시간다 표현
+
+
+
+
+
+
+////////////////////
+
+캐스트 함수는 형변환 대상 AS 데이터 타입
+
+CONVERT는 데이터형식(길이도 지정 가능)
+
+
+ger 양의 데이터만 signed inget
+
+
+암시적 형변환
+
+cast나 convert함수를 사용하지 않고 형이 변환되는 것
+앞에 숫자가 있으면 형변환
+
+select low limit -1000은 컬럼명이 뜬다.
+
+
+
+
+//////////////////////////////////////////
+
+
+foreign key 제약조건 컬럼을 정의하는
+
+
+create 한 테이블의 조건들과 insert한 데이터들의 순서가 같아야 한다.
+
+
+회원 테이블 데이터 입력 
+INSERT INTO usertbl VALUES('LSG', '이승기', 1987, '서울', '011', '1111111', 182, '2008-8-8'); 
+INSERT INTO usertbl VALUES('KBS', '김범수', 1979, '경남', '011', '2222222', 173, '2012-4-4'); 
+INSERT INTO usertbl VALUES('KKH', '김경호', 1971, '전남', '019', '3333333', 177, '2007-7-7');
+
+
+
+
+/////제약조건은 
+
+데이터의 무결성을 지키기 위한 제한된 조건 의미
+특정 데이터를 입력 시 어떠한 조건을 만족했을 때에 입력되도록 제약
+동일한 아이디로 다시 회원 가입이 안되는 것
+
+
+-> 데이터 무결성ㅇ을 위해 제약조건을 추가할 수 있다.
+
+그중 대표적인것들
+데이터 무결성을 위한 제약조건 
+PRIMARY KEY 제약 조건
+FOREIGN KEY 제약 조건
+UNIQUE 제약 조건
+CHECK 제약 조건(MySQL 8.0.16부터 지원)
+DEFAULT 정의
+NULL 값 허용
+
+
+여기서 프라이머리 제약조건은 낫널이고  중복안된
+프라이머리는 auto increment로 값이 증가하게 할 수 도 잇다.
+
+포린키
+이 컬럼이 가질 수 있는 값은 정해져 있다 다른 컬럼이 갔고 있는 값중에 하나 가질 ㅜㅅ 있다.
+
+유니크 키
+중복된 값 가질 수 없다.
+
+check 제약조건(마이에스큐엘 8.0.16부터 지원
+어떤 제약조건에 값이 오도록 하고 싶을 때 체크 제약조건사용
+이컬럼에 저장하기 적합한 값인가?
+
+default 제약조건은 이 컬럼에 들어오는 값을 처음부터 null(처음에 null이 자동으로 들어간다.)인 값이아니라 디폴트 제약조건으로 자동으로
+디폴트 제약조건이 들어간다.
+
+
+
+
+constraint primary key는 제약조건 자체에 이름ㅇ르 붙일 수 있다.
+
+constraint나 제약조건 이름
+
+
+프라이머리키는 여러 코드를 합쳐서 프라이머리 키로 지정할 수 있다.
+
+drop table if exists prodtbl; //존재하면 삭제하라는 의미
+if exists는 생략가능
+
+
+프라이머리키는 자동으로 인덱스가 만들어 진다.
+테이블의 찾고자 한는 값을 빨리 찾을 수 있게해준다.
+
+
+외래 키의 옵션 중 ON DELETE CASCADE 또는 ON UPDATE CASCADE
+기준 테이블의 데이터가 변경되었을 때 외래 키 테이블도 자동으로 적용되도록 설정
+외래 키 생성 방법 1 
+CREATE TABLE 끝에 FOREIGN KEY 키워드로 설정
+외래 키 생성 방법 2 
+ALTER TABLE 구문 이용
+
+
+
+
+UNIQUE 제약 조건 
+‘중복되지 않는 유일한 값’을 입력해야 하는 조건
+PRIMARY KEY와 비슷하나 UNIQUE는 NULL 값 허용 
+NULL은 여러 개가 입력되어도 상관없음
+
+
+
+
+
+
+CHECK 제약 조건 
+입력되는 데이터를 점검하는 기능
+키(Height) 제한 - 마이너스 값이 들어올수 없도록,
+출생년도 제한 - 1900년 이후이고 현재시점 이전
+ALTER TABLE문으로 제약 조건 추가 가능
+
+
+
+create table userTBL(
+USERID CHAR(8) PRIMARY KEY,
+NAME VARCHAR(10)
+BIRTHYEAR INT CHECK (BIRTHYEAR >= 1900 AND BIRTHYEAR<=2023),
+제약조건을 준다. 
 
 
 
@@ -41,21 +399,352 @@ union all은 중복을 허용한다.
 
 
 
+DEFAULT 정의 
+값 입력하지 않았을 때 자동으로 입력되는 기본 값 정의하는 방법
+ALTER TABLE 사용 시에 열에 DEFAULT를 지정하기 위해서 ALTER COLUMN문 사용
+
+
+예시 CREATE TABLE시
+h
+
+height default 170으로 줄 수 있다.
+
+
+디폴트 제약조건이 있는 것은
+lhl, 이혜리, default, default 이렇게 줄 수 있다.
+
+값이 직접 명시되면 디폴트로 설정된 값은 무시 된다.
+
+
+
+
+데이터 무결성을 위한 제약 조건 == NN이다 NOT NULL이 정해지지 않으면 NULL이 가능하다.
+
+
+
+Null 값 허용
+NULL 값을 허용하려면 NULL을, 허용하지 않으려면 NOT NULL을 사용
+PRIMARY KEY가 설정된 열에는 생략하면 자동으로 NOT NULL
+NULL 값은 ‘아무 것도 없다’라는 의미, 공백(‘ ‘) 이나 0과 다름
+
+
+
+
+테이블 삭제 
+외래 키 제약 조건의 기준 테이블은 삭제할 수가 없음
+먼저 외래 키가 생성된 외래 키 테이블을 삭제해야 함
+구매 테이블이 존재하는데 회원 테이블을 삭제할 수 없음, 구매 테이블 삭제가 선행되어야 함
+동시에 여러 테이블 삭제도 가능
+DROP TABLE 테이블1, 테이블2, 테이블3;
+DROP TABLE IF EXISTS 테이블명; DROP TABLE IF EXISTS 테이블명1, 테이블명2, ,,,;
 
 
 
 
 
+테이블 수정 
+ALTER TABLE문 사용
+테이블에 무엇인가 추가/변경/수정/삭제 모두 ALTER TABLE문 사용
+열의 추가 
+기본적으로 가장 뒤에 추가
+순서를 지정하려면 제일 뒤에 ‘FIRST’ 또는 ‘ALTER 열 이름’ 지정
+
+
+회원 테이블(usertbl)에 회원 홈페이지 주소 추가
+
+
+열의 삭제 
+제약 조건이 걸린 열을 삭제할 경우 제약 조건을 먼저 삭제한 후에 열을 삭제해야 함
+열의 이름 및 데이터 형식 변
+
+회원 이름(name)의 열 이름을 uName으로 변경하고 데이터 형식을 VARCHAR(20)으로 변경, NULL 값도 허용하는 경우
+열의 제약 조건 추가 및 삭제
+기본 키를 삭제 하는 경우
+오류가 발생
+usertbl의 기본 키인 userID열은 buytbl에 외래 키로 연결되어 있기 때문에 외래 키를 제거한 후에 다시 기본 키를
+제거해야 함
+
+
+
+뷰 
+일반 사용자 입장에서 테이블과 동일하게 사용하는 개체
+뷰를 생성한 후에는 테이블처럼 접근 가능하여 동일한 결과 얻을수 있음
+뷰의 작동 방식
+
+
+
+
+뷰 생성 구문
+뷰의 장점 
+보안에 도움
+사용자가 중요한 정보에 바로 접근하지 못함
+복잡한 쿼리 단순화
+긴 쿼리를 뷰로 작성, 뷰를 테이블처럼 사용 가능
+
+
+수행 코드가 없고
+
+
+
+
+객체 생성 
+
+일반 클래스의 객체 생성은 new 와 생성자 메서드를 사용한다. new 와 생성자 메서드를 사용하는 객체 생
+성은 Java 구문에서 지원되는 일반적인 객체 생성 방법이다.
+
+그러나 클래스들 중에는 이 일반적인 객체 생성을 통해서 객체를 생성할 수 없는 것들도 있다. 이런 경우에는
+해당 클래스에서 제공되는 static 형 메서드를 호출하여 객체 생성을 대신 할 수 있다.
+
+그렇다면 왜 생성자 메서드를 통해서 객체를 생성하지 않고 해당 클래스에서 제공되는 static 형 메서드를
+호출하여 객체 생성을 대신하도록 하는 것일까?
+
+모든 db서버에 공통적으로 설계는 클래스로 설계
+
+달라지는것은 인터페이스로  설계
+
+jdbc 프로그
+
+
+db 연동 자바 프로그램은 똑같다. 드라이버만 준비하면 된다.
+
+우리가 준비한것은 mysql-connector-java-8.0.17.jar
+
+jdbc를 하는 도중에는 new 하고 객체생성하는 것을 못 본다.
+
+자바 스테이트먼트에서 객체생서은 자식 클래스가 누구인지?
+
+
+스테이트먼트를 객체 생성해주려면 크레이트 스테이트먼트 펙토리 메서드를 생성한다.
+
+객체생성을 대신해주는 메서드를 팩토리 메서드라고 하다.
+
+
+활용적인 측면에서 구문을 완성시켜주는 것이 jdbc이다.
+
+지금 위에 적은 객체 생성내용을 정리 한것
+
+
+->->>>>>>
+객체 생성 
+ 
+일반 클래스의 객체 생성은 new 와 생성자 메서드를 사용한다. new 와 생성자 메서드를 사용하는 객체 생
+성은 Java 구문에서 지원되는 일반적인 객체 생성 방법이다.
+그러나 클래스들 중에는 이 일반적인 객체 생성을 통해서 객체를 생성할 수 없는 것들도 있다. 이런 경우에는
+해당 클래스에서 제공되는 static 형 메서드를 호출하여 객체 생성을 대신 할 수 있다.
+그렇다면 왜 생성자 메서드를 통해서 객체를 생성하지 않고 해당 클래스에서 제공되는 static 형 메서드를
+호출하여 객체 생성을 대신하도록 하는 것일까?
+
+
+JDBC 의 경우 대부분의 API 가 인터페이스이다.
+
+Connection, Statement, ResultSet, PreparedStatement
+
+
+
+/////////////
+result set 
+
+Connection : createStatement(), getMetaData()
+Statement : executeQuery(), executeUpdate()
+ResultSet : next(), getxxx()
+
+
+//////////////////////////////////
+
+JDBC는 Java 프로그램에서 DB 서버를 접속하여 데이터를 처리하는 기능을 구현하고자 할 때 사용되는
+
+
+Java 기술
+- JDBC 기술의 구성
+JDBC API (java.sql, javax.sql) -> 공통적(모든 DB 서버에 대해) 
+JDBC Driver -> DB 서버마다 달라진다.
+
+
+jdbc는 db 서버마다 달라진다.
+
+주요 jdbc api
+
+인터페이스 
+Connection, Statement, PreparedSt
+
+
+클래스
+
+
+
+스프링은 반제품 형식이다.
+
+
+
+
+////////////////////////////////////
+
+
+Statement, PreparedStatement : sql 명령을 수행시키는것
+
+prepared 확장ㅎ서
+
+statement 기본적인 것
+
+select 결과에 대한 resultset에 대한 방법
+
+databaseMetaData, ReultSetMetaData
+
+
+
+클래스에서
+
+DriverManager, Data Time, Timestamp
+
+DriverManager -> 드라이버를 관리하는 객체 먼저 db서버에 대한 접속이 먼저 되야한다.
+
+
+자바프로그램으로 먼저 db 서버에 접속하는 기능의 메소드를 알아야 한다. 드라이버 매니저에 get connection이라는 
+메소드가 있다.
+
+jdbc의 개념
+자바언어에서 Database에 접근할 수 있게 해주는 programming api
+
+사용
+
+어떤 응용 프로그램을 사용하더라도 jdbc 인터페이스는 동일하다.
+
+그리고 구현 동작은 각 드라이버가 동작한다.
 
 
 
 
 
+/////////////////////////////////
+
+
+JDBC 연결
+
+URL : Uniform Resource Locator
+
+------> HTTP URL이다.
+
+인터넷상에 url
+
+HTTP 통신할때 프로토콜 기반으로 통신한다.
+
+웹사이트 주소 문자열은 HTTP URL을 뜻한다.
+
+우리가 관심있게 봐야 하는 것은 JDBC URL을 의미한다.
+
+package level1;
+import java.sql.Connection;
+import java.sql.DriverManager;
+public class ConnectDB {
+public static void main(String args[]) {
+try {
+Class.forName("com.mysql.cj.jdbc.Driver");
+String url = 
+ "jdbc:mysql://localhost:3306/jdbcdb?characterEncoding=UTF-8&serverTimezone=UTC";
+String user = "root";
+String passwd = "1234";
+Connection conn = DriverManager.getConnection(url, user, passwd);
+conn.close();
+System.out.println("MYSQL 연결 성공");
+} catch (Exception e) {
+System.out.println("MYSQL 연결 실패");
+System.out.print("사유 : " + e.getMessage());
+}
+}
+}
+
+ "jdbc:mysql://[HOSTNAME][:PORT]/[DBNAME][]?PARAM1=VALUE1[&PARAM2=VALUE2]
+
+DriverManager.getConnection(url, user, passwd); -> 내부적으로 db에 접속할 때
+
+
+
+
+///////////////////////////////////////
+데이터 읽기
+
+[ 데이터 읽기 ]
+
+이거 시험
+개발패턴들 중에
+객체생성을 대신해주는 일반 메서드는 펙토리 메서드 이다.
+
+객체 생성을 대신해주는 펙토리 메서드는 커넥션이 가지고 잇다.
+
+리턴된 resultset을 가지고 
+
+
+driver.get 
+
+1. Driver 로드
+DriverManager로 어떤 DB를 사용할 것인지 드라이버를 로드한다.
+Class.forName("com.mysql.cj.jdbc.Driver");   //cj가 들어간다.
+각 DB마다 고유의 드라이버 이름이 있다. 
+
+
+
+2. Connection 얻기    // connection
+DB를 결정 후, 연결을 위해 연결 정보(DB 서버 url, ID, PW등)를 입력한다.
+String url = 
+"jdbc:mysql://localhost:3306/sqldb?characterEncoding=UTF-8&serverTimezone=UTC";
+String user = "root";
+String passwd = "1234";
+Connection conn = DriverManager.getConnection(url, user, passwd);
+
+
+
+3. Statement 작성
+DB 서버에 SQL 명령을 전달하여 실행시키기 위한 객체를 생성한다.
+Statement stmt = conn.createStatement(); 
+
+-.> connection에 제고하는 statement
+
+
+
+4. SELECT 명령을 실행하고 실행 결과를 ResultSet에 담기
+SELECT 명령을 실행한 결과는 JDBC 드라이버가 ResultSet이라는 객체로 반환한다.
+ResultSet rs = stmt.excuteQuery("SELECT ename, sal FROM emp");
+---> 어떤 명령이든 select절을 사용할 수 있다.
+
+
+
+5. ResultSet 객체에서 값 꺼내오기
+rs.next()     ----?_?//>>>>>>>>>>> 행단위로 옮겨가는것
+
+rs  14페이지에 보면 resultset 객체 첫번째 바로 앞을 가리키는 
+
+반드시 next 값을 호출하면 첫번째 행으로 옮겨간다. 한번은 호출 해야한다.
+
+이름이 첫번째 열이 였고 급여가 두번째 열이었는데 getString1 get
+
+
+
+String name = rs.getString("ename")
+int salary = rs.getInt("sal")
+
+
+
+6. 커넥션 반환하기
+반환 작업은 사용했던 객체를 역순으로 닫는다.
+rs.close();
+stmt.close();
+conn.close();
+- ResultSet
+
+커넥션 객체 만들어놓고 쓰지 않으면 다른 커넥션을 서포트 하지 못하기 때문에 객체를 닫는것이 
+중요하다.
 
 
 
 
 
+ResultSet은 설명했듯 Query의 실행 결과를 담는 객체로서 최초에는 결과 집합에서 0번째 줄을 가리키고
+있다. 때문에 다음 줄을 가리키기 위해서는 next() 메서드를 수행한다.
 
 
 
+
+
+RESULTSET 객체안에는 디비 서버의 결과의 정보에 대한 것을 담고 잇다.
+
+RESULTSET 객체가 가르키고 있는 것은 첫번째 집하
