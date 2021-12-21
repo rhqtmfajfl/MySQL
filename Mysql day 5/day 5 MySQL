@@ -1,0 +1,189 @@
+day5
+
+
+
+executeQuery() 이 경우 리턴값을 사용하지 않는다. 몇행이 삭제 되었다 몇행이 
+
+insert sms 1
+
+delete 
+
+update의 경우 에는 리턴값을 체크해서 사용하는 경우가 충분히 있다.
+
+insertdata2와
+
+insertdata1
+
+
+
+insertdata1은 try catch로 예외처리하고
+
+selecㅅ는 close 처리를 안했다. 이
+
+
+select는 try catch resource로 예외 처리를 했기 때문에 close가 안되어있다.............
+
+
+
+
+//////
+statement에는 sql명령을 담아서 호출해주고 있었다.
+여러 명령을 다양하게 상ㅇ한ㄴ 
+statement와 
+
+sql 명령을 그때 그때 사용하는것
+
+이거는 표현할 데이터가 string 만 되고 
+binary 데이터는 안된다.
+
+
+
+pre paredstatement 
+(준비된 스테인트 먼트) 스테이틈ㄴ트와 다른점 객체생성시 sql 명령을 미리 준비 해놓는다.
+-> 등록할 때 사용될 sql만 사용할 수 있다.
+sql에 대한 해석이 늘어난다.
+
+해석시간을 줄일 수 있고
+
+데이터를 insert 할때 여러개를 쓰지 않아도 된다.
+	//테이블이 없을때 실행하면 sqlexcetion 발생
+			stmt.executeUpdate("insert into student values ('또치', 90)");
+			stmt.executeUpdate("insert into student values ('도우너', 95)");
+			stmt.executeUpdate("insert into student values ('희동이', 80)");
+			stmt.executeUpdate("insert into student values ('마이콜', 85)");
+      
+      실제
+
+
+			stmt.executeUpdate("insert into student values ('또치', 90)");
+
+
+
+insert into student values ('또치', 90)
+     prepared는 values(?,?)
+  이렇게 사용가능하다.
+  
+  
+  동일한 sql 명령을 여러번 사용하겠다. 할때 사용 
+  
+
+
+prepared statedn
+
+
+객체생성시 미리 sql 문을 준비 하고 sql을 사용한다.
+
+?? value 안에 물음표가 있으면 빈괄호를 줘서 처리 한다.
+
+
+
+- Statement 사용
+Statement stmt = conn.createStatement();
+stmt.executeUpdate("insert into student values ('둘리', 100)");
+stmt.executeUpdate("insert into student values ('또치', 90)");
+
+
+
+\
+
+
+stmt.executeUpdate("insert into student values ('"+name+"','"+score+")");   //이렇게 + 연산자를 사용해서 추루력
+
+int delNum = stmt.executeUpdate("delete from student where name = '"+name+"'");
+int updateNum = stmt.executeUpdate ("update student set score = "+score +
+ " where name = '"+name'");
+ 
+ 외둡에서 받아서 하고 있을 때
+ 
+ 
+
+stmt.executeUpdate("insert into student values ('"+name+"','"+score+")");
+
+이거를 prepared로 바꾸면 이렣기 된다.
+
+
+
+이것을 동적 파라미터라고 한다.
+- PreparedStatement 사용
+PreparedStatement pstmt = conn.prepareStatement("insert into student values (?, ?)");
+pstmt.setString(1, name);
+pstmt.setInt(2, score);
+pstmt.executeUpdate();
+
+?는 나웅에 
+
+
+
+prepared는 아규먼트 주면 안됨
+pstmt.setInt(2, score);
+pstmt.executeUpdate();
+
+
+
+prevaredStratione
+
+매소드 이름은 prepareStatement 이다.
+
+
+
+prepared statue ㅡment 동적으로 세팅하여 사용하게
+
+
+PreparedStatement pstmt = conn.prepareStatement("delete from student where name = ?")
+pstmt.setString(1, name);
+int delNum = pstmt.executeUpdate();
+PreparedStatement pstmt = conn.prepareStatement(
+ "update student set score = ? where name = ?");
+ 
+ 어떤 이미지에 넣어라 //? 하나
+
+callable Sstatment
+
+프로시저를 만드는 방법이 닫 달ㄹ서 나중에 봐도 된다.
+
+
+
+
+
+
+///////////////
+
+
+
+이미지 넣는 방법
+파일이 조존재하ㅡㄴ 위치 : 절대 패스, 상대 패스
+
+temp 에 잇는것으로 예시
+
+절대 패스는 c: c드라이브 내에있는것으로 
+c:/Temp/test.png
+
+\는 폴더 구문자 
+
+자바에서 \백슬래시를 사용할때는 두번 써야 된다. \\
+
+상대패스로 주게 되면 현재 디렉토리가 어디있느냐에 따라 다르다.
+
+우리는 jdbc_proj에 있다.
+
+상대 경로는 ../../Temp/test.png
+
+
+
+
+
+
+
+
+
+
+
+
+///////////////////////////
+				//클래스 이름 INPUTsTREAM이거나 ~ 1SUSWJDEH 
+        
+        //~~INPUTStream, outputstream
+        reader writer => writerleader , bufferleader
+
+
+
