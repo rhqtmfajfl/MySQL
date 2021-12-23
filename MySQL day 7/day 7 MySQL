@@ -773,14 +773,137 @@ db.products.find( { description: { $regex: /m.*line/, $options: 'si' } } )  si�
 
 
 
+[ Database 제거 : db.dropDatabase() ]
+이 명령어를 사용하기 전, use DATABASE_NAME 으로 삭제하고자 하는 데이터베이스를 선택한다.
+> use 데이터베이스명
+> db.dropDatabase();
+> show dbs
+
+
+
+[ Collection 생성 : db.createCollection() ]
+Collection을 생성할 때는 db.createCollection(name, [options]) 명령어를 사용한다. 또한 콜렉션은 도큐먼트를 최초로 저장할 때
+자동으로 생성되므로 직접 생성하지 않아도 된다.
+
+> use test
+switched to db test
+> db.createCollection("game")
+> show collections
 
 
 
 
+[ Collection 제거 : db.COLLECTION_NAME.drop() ]
+> use test
+switched to db test
+> show collections
+> db.컬렉션이름.drop()
+> show collections
+
+
+///////////////////////////////////
+
+28
+
+[ Document 추가 : db.COLLECTION_NAME.insert(document) ]
+> db.book.insertMany({"name": "CSS3", "price": 17000})
+> db.book.insert([
+{"name": "pandas", "price": 21000},
+{"name": "R", "price": 23000}
+
+도큐먼트는 반듯이 json 객체 형식으로 만들어져 있어야 한다.
+
+insertMany는 다중 도큐먼트를 집어넣는 것이다.
+
+
+
+remove는 삭제하는 것이다.
+
+
+
+> db.book.find()
+[ Document 제거: db.COLLECTION_NAME.remove(criteria, justOne) ]    criteria 객체
+parameter type 설명
+criteria document 삭제할 데이터의 기준 값(criteria)이다. 
+이 값이 { } 이면 컬렉션의 모든 데이터를 제거한다.
+justOne boolean 선택적(Optional) 매개변수이며 이 값이 true 면 1개 의 다큐먼트만 제
+거한다. 이 매개변수가 생략되면 기본값은 false 로서, criteria에 해당되
+는 모든 다큐먼트를 제거한다.
+> db.book.find({"name": "R"})   이름이 R인 책이름을 찾는다.
+> db.book.remove({"name": "R"})   이름이 R인 책을 삭제 한다.
+
+> db.book.find()
 
 
 
 
+update
+[ Document 수정: db.COLLECTION_NAME.update({ matchQuery }, { updateQuery }, { optionQuery }) ]
+matchQuery - 원하는 값을 찾을 검색 쿼리
+updateQuery - 일치하는 document(row)를 찾은 후 변경할 쿼리 입력
+optionQuery - 동작 방식에 대한 옵션
+ - upsert: <Boolean>
+update와 insert를 합성한 단어로 만약 matchQuery에서 일치하는 결과가 없는 경우 새로운 값을 추
+가(insert)할 것인지의 여부를 선택할 수 있습니다. 값은 true/false로 설정하며 기본값은 false임
+- multi: <Boolean>
+multi:true를 설정하면 여러 개의 일치하는 document(row)가 존재할 경우 모두 변경. 기본값은 false
+이며 하나의 document만 변경
+> db.book.update({"name": "python"},{ "name" : "python", "price":10000 })
+> db.book.update({"name": "pandas"},{ "name" : "pandas", "price":20000 }, {upsert : true} )
+> db.book.update({"name": "python"},{$set:{"price":10000}})
 
 
+
+
+{ matchQuery }, { updateQuery }, { optionQuery }
+
+
+{ optionQuery }  update와 insert의 합성어이다.
+
+멀티가 true면 조건에 맞는 애들을 수정한다.
+
+multi가 false면 하나만 수정 한다.
+
+
+
+
+upsert는 조건에 알맞은 도큐먼트를 보니까 주어진 필드명에 해당되는 내용이 이미 있으면 value만 바꾼다.
+
+새로운 값을 추가 한다.
+
+업데이트 하고자 하는 필드명이 존재하면 값만 바꾸고 아니면 새로이 추가 한다.
+
+업데이트와 insert를 합성한 단어다.  upsert라는 의미
+
+- upsert: <Boolean>
+update와 insert를 합성한 단어로 만약 matchQuery에서 일치하는 결과가 없는 경우 새로운 값을 추
+가(insert)할 것인지의 여부를 선택할 수 있습니다. 값은 true/false로 설정하며 기본값은 false임
+
+
+> db.book.update({"name": "python"},{ "name" : "python", "price":10000 })   네입이 파ㅏ이썬인 도큠ㄴ트를 찾는다 파이썬인 네임을 
+한꺼번에 지정  이름이 파이썬인 도큐먼트가 있는데 파이썬은 그대로 하고 싶고 가격만 바꾸고 시다면 두번째 아규먼트가 바꾹싶은 내용인데
+
+이때 파이썬이라는 내용을 찾아서 새 도큐 먼트를 추가해
+찾고자 하는 책의 내용도 파이썬 이고 
+{ "name" : "python", "price":10000 }) 새롭게 추가할 내용도 파이썬이다.
+
+가격만 바꾸고 싶다면 update라는 메소드를 사용하면서 네임을 빼고 price만 주면
+
+파이썬이라는 값을 가지는 파이선은 사라지고 price만 남게 된다.
+
+어떤한 필드 값을 갖는 필드값을 바꾸고 싶다면 특정 필드만 바꾸고자 한다면 
+
+> db.book.update({"name": "python"},{$set:{"price":10000}}
+set 연산자를 사용해서 바꿔야 한다.
+
+
+
+> db.book.update({"name": "pandas"},{ "name" : "pandas", "price":20000 }, {upsert : true} )
+이름이 판다스 인 것을 찾아라 판다스라는 이름을 갖는 도큐먼트가 존재하지 않으면 새로이 추가되고 존재하면  { "name" : "pandas", "price":20000 }, {upsert : true}
+이걸로 바뀌고 이렇게 바뀌는 조건은 upsert를 true로 줬기 때문이다.
+
+> db.book.update({"name": "python"},{$set:{"price":10000}}
+
+
+컬렉션 복사 : db.컬렉션 이름.copyToAll(새로운 컬렉션 이름)
 
