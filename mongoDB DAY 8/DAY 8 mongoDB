@@ -8,3 +8,404 @@ getDate()
 
 getYear() deprecated get FullYear()를 사용해라라고  하지만 getYear를 사용하고 getYear를 사용 했을 때는 샘플에 넣어 놧다.
 
+
+
+
+
+isodate 라는 함수는 자바 스크립트이 data()를 래핑한거다.
+
+
+db.datecoll.insert({_id : 6, name : 'mmm', dt : new Date()})
+
+몽고디비에서 날짜 함수 사용해라고 준 함수들 
+
+db.datecoll.insert({_id : 1, name : '가나다', dt : ISODate()})
+
+
+db.datecoll.insert({_id : 2, name : 'abc', dt : ISODate("2020-01-01")})   -> 년월 일을 주었다.
+
+
+db.datecoll.insert({_id : 3, name : 'xyz', dt : ISODate("2021-05-25 13:10")})  ->년 월일 시분
+
+
+
+
+db.datecoll.insert({_id : 4, name : 'lmn', dt : ISODate("2021-05-25T 13:05")})   ->  년월일과 시분초 사이에 T는 못들었다.......뭐야  T 넣어서 사용가능하다.  그래야 다양하게 해본다. 
+
+시분초는 콜론으로 한다.
+
+년월일 한칸띄고 T도 된다.
+
+
+
+
+db.datecoll.insert({_id : 5, name : 'ㅋㅋ', dt : ISODate("2020-10-05")})
+
+
+db.datecoll.insert({_id : 6, name : 'mmm', dt : new Date()})  -> 데이터 객체를 생설 할 수 있따.  ISODate랑 같은 의미 이다.
+
+
+db.datecoll.insert({_id : 7, name : 'kkk', dt : ISODate("1998-11-07T00:00:00Z")}) 여기에 1998-11-07T00:00:00Z 규격화 된것 최종적인 년월일 시분초에 대한것
+
+
+
+
+
+
+
+자바 스크립트의 아규먼트를 안주면 현재 시스템 시간으로 간주  결과는 9시간 정도 차이가 난다. 이유는 
+
+프로그램이 실행될때 운영정보가 로케일 정보 
+
+운영프로그램의 환경으로 세팅해주는 애플리케이션이 있ㄱ나 자기가 정해놓은 기본값으로만 인식한게 있는데 몽고디비 서버느 utc를 적용 한다. utc는 협정 세계 시
+
+
+> db.datecoll.find()
+{ "_id" : 1, "name" : "가나다", "dt" : ISODate("2021-12-24T01:11:01.801Z") }
+{ "_id" : 2, "name" : "abc", "dt" : ISODate("2020-01-01T00:00:00Z") }
+{ "_id" : 3, "name" : "xyz", "dt" : ISODate("2021-05-25T13:10:00Z") }
+{ "_id" : 4, "name" : "lmn", "dt" : ISODate("2021-05-25T13:05:00Z") }
+{ "_id" : 5, "name" : "ㅋㅋ", "dt" : ISODate("2020-10-05T00:00:00Z") }
+{ "_id" : 6, "name" : "mmm", "dt" : ISODate("2021-12-24T01:14:31.036Z") }
+{ "_id" : 7, "name" : "kkk", "dt" : ISODate("1998-11-07T00:00:00Z") }
+
+> db.datecoll.find().sort({dt:1})
+{ "_id" : 7, "name" : "kkk", "dt" : ISODate("1998-11-07T00:00:00Z") }
+{ "_id" : 2, "name" : "abc", "dt" : ISODate("2020-01-01T00:00:00Z") }
+{ "_id" : 5, "name" : "ㅋㅋ", "dt" : ISODate("2020-10-05T00:00:00Z") }
+{ "_id" : 4, "name" : "lmn", "dt" : ISODate("2021-05-25T13:05:00Z") }
+{ "_id" : 3, "name" : "xyz", "dt" : ISODate("2021-05-25T13:10:00Z") }
+{ "_id" : 1, "name" : "가나다", "dt" : ISODate("2021-12-24T01:11:01.801Z") }
+{ "_id" : 6, "name" : "mmm", "dt" : ISODate("2021-12-24T01:14:31.036Z") }
+
+
+> db.datecoll.find().sort({dt:-1})
+{ "_id" : 6, "name" : "mmm", "dt" : ISODate("2021-12-24T01:14:31.036Z") }
+{ "_id" : 1, "name" : "가나다", "dt" : ISODate("2021-12-24T01:11:01.801Z") }
+{ "_id" : 3, "name" : "xyz", "dt" : ISODate("2021-05-25T13:10:00Z") }
+{ "_id" : 4, "name" : "lmn", "dt" : ISODate("2021-05-25T13:05:00Z") }
+{ "_id" : 5, "name" : "ㅋㅋ", "dt" : ISODate("2020-10-05T00:00:00Z") }
+{ "_id" : 2, "name" : "abc", "dt" : ISODate("2020-01-01T00:00:00Z") }
+{ "_id" : 7, "name" : "kkk", "dt" : ISODate("1998-11-07T00:00:00Z") }
+
+
+추출해온 도큐먼트에 관해서 년도만 뽑아서 출력하려면 aggregate라는 api를 사용해야 한다.
+
+
+
+var v = db.datecoll.find()
+while(v.hasNext()) {
+ var d = v.next();
+ print(d.dt.getYear()+1900)
+}
+
+
+커서 객체를 통해서 hasNext 하면 서 하나씩 꺼내서
+
+d라는 변수에 도큐먼트가 하나씩 들어간다.
+
+dt 로 꺼내오는 객체가 자바 스크립트의 데이터 객체이다.
+
+getYear을 쓰고 있는 소스들이 아직 많다.
+
+
+find 한다음에 foreach한고 function(c)을 둔다.
+
+
+
+dt.getFullYear()
+
+
+var v = db.datecoll.find()
+while(v.hasNext()) {
+ var d = v.next();
+ print(d.dt.getYear()+1900)
+}
+
+
+db.datecoll.find().forEach(
+ function(c) {    //매개 변수는 몇개까지??
+ print(
+ c.dt.getFullYear()
+ );
+ }
+)
+
+
+db.datecoll.find().map((c)=> {
+ c = c.dt.getFullYear();
+ return c;
+ }
+)
+
+db.datecoll.find().map(
+ function(c) {
+ c = c.dt.getFullYear();
+ return c;
+ }
+)
+
+
+
+
+db.datecoll.find().forEach((doc)=> {
+ if(doc.dt.getFullYear() == 2021)   원하는 년도에 한해서 구현하기  꺼내온 다음에 운영프로그램 단에서 가져온 도큐먼트들에 대해서 처리를ㄹ 한다.
+ print(doc._id);                      이 부분
+ print(doc.name);
+ print(doc.dt)
+ }
+)
+
+
+db.datecoll.find().forEach(
+ function(doc) {
+ if(doc.dt.getFullYear() == 2021)
+ print(doc._id);
+ print(doc.name);
+ print(doc.dt)
+ }
+)
+
+
+
+
+현재사용하겠다고 한 db 안에 어떤 콜렉션이 있는지 확인
+
+
+
+
+
+key : {$operator: value}  키 안에 벨류에 특정 연산자의 값이 있는지
+
+
+필드의 값이 
+
+count하고 sort
+
+
+/////////////////////////////////////
+
+
+
+32 페이지
+
+mysql은 테이블과 테이블 간의 관계 참조ㅊ키 제약조건과 프라이머리 키 제약조건을 사요하여 
+
+조인  (서브쿼리)를 활용하여 데이터를 추출
+
+데이터의 중복을최소화 하기 위해서 여려개의 테이블로 나누는 것이
+
+
+
+
+
+
+노에스큐엘서버
+
+
+
+
+관계형 db와
+
+noSQL DB도 한축을 차지하고 있다.
+
+ACID라는작업이 중요할때는 관계형 디비
+
+
+
+관계형 디비는 
+
+일관성 은 공연 예약 등 예약 프로그램에서 중요하게 사용됨
+
+
+
+노에스큐엘 디비
+
+가용성을 중요하게 생각할때
+
+노 에스큐엘 몽고 디비 같은 경우 
+
+결과적 일관성
+어떤 데이터 환경에서든 유저가 원하는 데이터에 대한 
+클러스터는 하나의 클러스터로 묶는것이다.
+
+복제 메커니즘에 의해 모든 서버에 데이터 복제가 동시에 실행 될 수 없음
+
+시스템 부하 및 네트워크 속도에 따라 서버에 복제하는 시간이 다를 수 있으나 최종적으로는 모든
+
+서버에 데이터가 복제됨
+
+
+
+
+
+트랜잭션이 중요하면 
+
+관계형 DB의 데이터 모델링 절차
+
+관계형디비는 먼저 테이블을 디자인 해야 하낟. 쿼리는 테이블을 만든 상태에서 CRUD를 만든다.
+
+
+NOSQL 데이터 모델링 절차
+
+도메인 분석 쿼리 디자인 테이블 디자인 결과
+NO SQL은 CRUD를 어떻게 할지 고려하고 콜렉션 안에 임베딩 방식으로 레퍼런스 방식으로 할 건지 정한다.
+
+여기서는 도큐먼트 디자인이라고 한다.
+
+
+
+
+
+/////////////////////////
+34 
+35 페이지
+트럭에 대한 정보와 음식에 대한 정보만 처리하겠다 하면 TRUCK이라는 컬렉션 정보만 처리하면 된다.
+
+관계형 처럼 ㄷ테이블을 나누게 되면 JOIN도 사용하고 복잡하게 되지만 NOSQL 디비를 사용하기 위해 재 모델링을
+하면 관계형 디비 보다 좀더 단순해 진다.
+
+
+
+
+MySQL                                             mongoDB                                   description
+SELECT * FROM user                             db.user.find({})                             to select all
+SELECT name, age FROM user                             db.user.find({}, {name: 1, age: 1, _id:0})                            to project column/fields
+
+
+SELECT name, age FROM user                            db.user.find({age: 30}, {name: 1, age:
+WHERE age = 30
+                                              
+1, _id:0})
+select with project
+SELECT * FROM user WHERE age >
+30,
+db.user.find({age: {$gt: 30}}) range based selection
+SELECT * FROM user WHERE age <=
+30,
+db.user.find({age: {$lte: 30}}) range based selection on
+numeric value
+SELECT * FROM user WHERE age >
+30 AND age < 40,
+db.user.find({age: {$gt: 30, $lt: 40}}), range based selection on
+numeric value
+SELECT * FROM user WHERE age =
+32 AND name = 'ranjeet',
+db.user.find({age: 32, name:
+'ranjeet'});
+equality and range both
+SELECT * FROM user WHERE age =
+30 OR name = 'ranjeet',
+db.user.find({$or:[{age:30}, {name:
+'ranjeet'}]});
+equality and range both
+SELECT * FROM user WHERE age =
+30 ORDER BY name ASC;
+db.user.find({age: 30}).sort({name: 1}); equality and sorting on
+name with ascending
+SELECT * FROM user ORDER BY
+name DESC ;
+db.user.find().sort({name: -1}); equality and sorting on
+name with descending
+SELECT * FROM user WHERE name
+LIKE '%ran%' ;
+db.user.find({name: /ran/}); contains selection
+SELECT * FROM user WHERE name
+LIKE 'ran%' ;
+db.user.find({name: /^ran/}); regex start with provided
+word
+SELECT * FROM user LIMIT 10 SKIP
+15;
+db.user.find().skip(15).limit(10); for pagination with offset
+and length
+SELECT * FROM user LIMIT 1; db.user.findOne(); select first record.
+MySQL mongoDB description
+SELECT DISTINCT name FROM user; db.user.distinct("name"); with distinct
+SELECT COUNT(*) FROM user; db.user.count(); count records/document
+SELECT COUNT(*) FROM user
+WHERE AGE > 20
+db.user.find({age: {$gt: 20}}).count() provided condition and then
+count records/document
+SELECT COUNT(AGE) FROM user; db.user.find({age: {$exists:
+true}}).count();
+existence check
+
+
+
+
+
+///////////////////////
+37페이지
+
+JAVA와 MongoDB
+
+자바에서 몽고디비를연동할 때는
+
+
+
+JDBC를 사용하지 않는다.
+
+
+메이븐 프로그램 관리자 역할을 하는 관리자로 되어있으면 좋은데
+
+
+메이븐은 스프링 할 때 사용 스프링은 기본적으로 메이븐 할 때 사용
+
+메이븐 사용 ㅅ ㅣ 좋은 점은 BUILD PATH에 들어가서 끌어오고 하는데 그런 작업을 안해도 된다.
+
+메이븐은 업그레이드 되는 것을 실시간으로 반영한다.
+
+MVN REPOSITORY는 MAVEN과 같은 프로그램 관리 도구 이고
+
+그런 프로그램 관리 도구의 라이브러리 같은 것이다.
+
+여기서 몽고 디비 4. 대에 알맞는 드라이버를 내려 받는다.
+
+mongodb-win32-x86_64-2008plus-ssl-4.0.27-signed.msi 몽고 디비 이 파일을
+
+몽고디비 폴더의 MONGODB 의 SERVER와 같은 곳에 둔다.
+
+
+
+//////////////////
+40페이지
+
+package mongo.level1;
+import com.mongodb.MongoClient;
+import com.mongodb.MongoClientURI;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoIterable;
+
+
+
+public class MongoJava {
+ public static void main(String[] args) {
+ try {
+ 
+ MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
+ System.out.println("접속 성공--- ");
+ MongoIterable<String> dblist = mongoClient.listDatabaseNames();
+
+System.out.println("[데이터베이스 리스트]");  
+ for(String name : dblist)
+ System.out.println(name);
+
+
+MongoDatabase db = mongoClient.getDatabase("edudb");   // EDUDB라는 데이터 베이스를 가져오겠다. 몽고 database 객체
+
+ MongoIterable<String> clist = db.listCollectionNames();   //iterable 객체
+ System.out.println("[edudb 데이터베이스의 컬렉션 리스트]");  //컬렉션들의 정보가 저장되어 있다.
+ for(String name : clist)   //몽고디비는 예외 처리가 선택 적이다.
+ System.out.println(name);
+ mongoClient.close();
+ }   //여기까지 try 기술
+ 
+ catch (Exception exception) {
+ System.err.println(exception.getClass().getName() + ": " + exception.getMessage());
+ }
+ }
+}
+
+
+
+
